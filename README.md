@@ -36,3 +36,13 @@ users location.',
     'required': ['location', 'format']
 }
 ```
+
+## Roadmap
+
+- [ ] Support classes (treat them as `object`s with certain `"properties"
+- [ ] Support methods (treat them as functions with an additional `self` parameter`)
+- [ ] Support multiple functions
+- [ ] Support `Enum`s
+- [ ] Support named tuples
+- [ ] Make the code safe for local execution
+- [ ] Refactor code and make locally executable
