@@ -1,4 +1,4 @@
-# openai-functions-api
+# py2gpt
 
 Recently, OpenAI has released the GPT function API that allows models like GPT-4 to "invoke" functions on the user's behalf.
 The problem is that the format, in which these functions is specified, is JSON Schema, which is relatively niche and hard to work with.
