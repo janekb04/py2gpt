@@ -14,7 +14,7 @@ def get_current_weather(location: str, format: Literal["fahrenheit", "celsius"])
     """
 ```
 Produces the following JSON that matches one of OpenAI's own examples:
-```json
+```js
 {
     'name': 'get_current_weather',
     'description': 'Get the current weather',
