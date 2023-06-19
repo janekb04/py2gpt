@@ -33,46 +33,45 @@
 
             <!-- Scripts -->
             <script type="module">
+                import { basicSetup } from "./codemirror.js"
+                EditorView = window.CM["@codemirror/view"].EditorView
+                keymap = window.CM["@codemirror/view"].keymap
+                indentWithTab = window.CM["@codemirror/commands"].indentWithTab
+                python = window.CM["@codemirror/lang-python"].python
+
                 const doc = '"Type in your function declaration here..."'
 
-                await import("./codemirror.js").then((_) => {
-                    EditorView = window.CM["@codemirror/view"].EditorView;
-                    keymap = window.CM["@codemirror/view"].keymap;
-                    indentWithTab = window.CM["@codemirror/commands"].indentWithTab;
-                    python = window.CM["@codemirror/lang-python"].python;
-
-                    editor = new EditorView({
-                        doc,
-                        extensions: [
-                            basicSetup,
-                            keymap.of([indentWithTab]),
-                            python()
-                        ],
-                        parent: document.getElementById("editor")
-                    })
-
-                    const intervalTime = 1000;
-                    let lastVal = "";
-                    let isLoaded = false;
-
-                    function loadPyodideIfNeeded() {
-                        if (!isLoaded) {
-                            globalThis.loadPyodide();
-                            isLoaded = true;
-                        }
-                    }
-
-                    function validate() {
-                        loadPyodideIfNeeded()
-                        const val = editor.state.doc.toString();
-                        if (val !== lastVal) {
-                            lastVal = val;
-                            pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
-                        }
-                    }
-
-                    setInterval(validate, intervalTime);
+                editor = new EditorView({
+                    doc,
+                    extensions: [
+                        basicSetup,
+                        keymap.of([indentWithTab]),
+                        python()
+                    ],
+                    parent: document.getElementById("editor")
                 })
+
+                const intervalTime = 1000;
+                let lastVal = "";
+                let isLoaded = false;
+
+                function loadPyodideIfNeeded() {
+                    if (!isLoaded) {
+                        globalThis.loadPyodide();
+                        isLoaded = true;
+                    }
+                }
+
+                function validate() {
+                    loadPyodideIfNeeded()
+                    const val = editor.state.doc.toString();
+                    if (val !== lastVal) {
+                        lastVal = val;
+                        pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
+                    }
+                }
+
+                setInterval(validate, intervalTime);
             </script>
             <py-script src="main.py"></py-script>
             <py-config>
