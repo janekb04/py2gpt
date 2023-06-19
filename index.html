@@ -33,7 +33,8 @@
 
             <!-- Scripts -->
             <script type="module">
-                import { basicSetup } from "./codemirror.js"
+                import "./codemirror.js"
+                basicSetup = window.CM["codemirror"].basicSetup
                 EditorView = window.CM["@codemirror/view"].EditorView
                 keymap = window.CM["@codemirror/view"].keymap
                 indentWithTab = window.CM["@codemirror/commands"].indentWithTab
