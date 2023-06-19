@@ -21,6 +21,51 @@
         }
     </style>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script type="module">
+        function setup() {
+            import("./codemirror.js").then((module) => {
+                basicSetup = window.CM["codemirror"].basicSetup
+                EditorView = window.CM["@codemirror/view"].EditorView
+                keymap = window.CM["@codemirror/view"].keymap
+                indentWithTab = window.CM["@codemirror/commands"].indentWithTab
+                python = window.CM["@codemirror/lang-python"].python
+
+                const doc = '"Type in your function declaration here..."'
+
+                editor = new EditorView({
+                    doc,
+                    extensions: [
+                        basicSetup,
+                        keymap.of([indentWithTab]),
+                        python()
+                    ],
+                    parent: document.getElementById("editor")
+                })
+
+                const intervalTime = 1000;
+                let lastVal = "";
+                let isLoaded = false;
+
+                function loadPyodideIfNeeded() {
+                    if (!isLoaded) {
+                        globalThis.loadPyodide();
+                        isLoaded = true;
+                    }
+                }
+
+                function validate() {
+                    loadPyodideIfNeeded()
+                    const val = editor.state.doc.toString();
+                    if (val !== lastVal) {
+                        lastVal = val;
+                        pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
+                    }
+                }
+
+                setInterval(validate, intervalTime);
+            });
+        }
+    </script>
     <script defer onload="setup()" src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 
@@ -29,53 +74,6 @@
             <h2>Python to OpenAI function specification converter</h2>
             <div class="editor" id="editor"></div>
             <iframe id="result" srcdoc="" style="width:100vw;height:100vh;" frameborder="0"></iframe>
-
-            <!-- Scripts -->
-            <script type="module">
-                function setup() {
-                    import("./codemirror.js").then((module) => {
-                        basicSetup = window.CM["codemirror"].basicSetup
-                        EditorView = window.CM["@codemirror/view"].EditorView
-                        keymap = window.CM["@codemirror/view"].keymap
-                        indentWithTab = window.CM["@codemirror/commands"].indentWithTab
-                        python = window.CM["@codemirror/lang-python"].python
-
-                        const doc = '"Type in your function declaration here..."'
-
-                        editor = new EditorView({
-                            doc,
-                            extensions: [
-                                basicSetup,
-                                keymap.of([indentWithTab]),
-                                python()
-                            ],
-                            parent: document.getElementById("editor")
-                        })
-
-                        const intervalTime = 1000;
-                        let lastVal = "";
-                        let isLoaded = false;
-
-                        function loadPyodideIfNeeded() {
-                            if (!isLoaded) {
-                                globalThis.loadPyodide();
-                                isLoaded = true;
-                            }
-                        }
-
-                        function validate() {
-                            loadPyodideIfNeeded()
-                            const val = editor.state.doc.toString();
-                            if (val !== lastVal) {
-                                lastVal = val;
-                                pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
-                            }
-                        }
-
-                        setInterval(validate, intervalTime);
-                    });
-                }
-            </script>
             <py-script src="main.py"></py-script>
             <py-config>
                 packages = ["docstring_parser", "rich"]
