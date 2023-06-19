@@ -23,12 +23,38 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer onload="console.log(`pyscript version: ${pyscript.version}`)"
         src="https://pyscript.net/latest/pyscript.js"></script>
+    <script>
+
+
+        setInterval(validate, intervalTime);
+    </script>
 </head>
 
 <body>
     <h1>py2gpt<h1>
             <h2>Python to OpenAI function specification converter</h2>
+            <div class="editor" id="editor"></div>
+            <iframe id="result" srcdoc="" style="width:100vw;height:100vh;" frameborder="0"></iframe>
+
+            <!-- Scripts -->
             <script>
+                import { basicSetup } from "codemirror"
+                import { EditorView, keymap } from "@codemirror/view"
+                import { indentWithTab } from "@codemirror/commands"
+                import { python } from "@codemirror/lang-python"
+
+                const doc = '"Type in your function declaration here..."'
+
+                editor = new EditorView({
+                    doc,
+                    extensions: [
+                        basicSetup,
+                        keymap.of([indentWithTab]),
+                        python()
+                    ],
+                    parent: document.getElementById("editor")
+                })
+
                 const intervalTime = 1000;
                 let lastVal = "";
                 let isLoaded = false;
@@ -42,20 +68,14 @@
 
                 function validate() {
                     loadPyodideIfNeeded()
-                    const editor = document.getElementById("editor");
-                    const val = editor.value;
+                    const val = editor.state.doc.toString();
                     if (val !== lastVal) {
                         lastVal = val;
-                        pyscript.interpreter.run("validate()");
+                        pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
                     }
                 }
-
-                setInterval(validate, intervalTime);
             </script>
-            <textarea class="editor" id="editor" placeholder="Type in your function declaration here..."></textarea>
             <py-script src="main.py"></py-script>
-            <iframe id="result" srcdoc="" style="width:100%;height:500px;"></iframe>
-
             <py-config>
                 packages = ["docstring_parser", "rich"]
             </py-config>

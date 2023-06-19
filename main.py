@@ -168,16 +168,14 @@ def validate_declaration(decl: str) -> dict:
     }
 
 
-def validate():
-    element = Element
-    decl = element("editor").value
-    result = element("result")
+def validate(decl: str):
+    result = Element("result")
 
     console = Console(color_system="standard", record=True, file=StringIO())
     try:
         schema = validate_declaration(decl)
         console.print(schema)
-    except Exception as e:
+    except Exception:
         console.print_exception(show_locals=True)
 
     html = console.export_html()
