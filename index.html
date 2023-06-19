@@ -23,11 +23,6 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer onload="console.log(`pyscript version: ${pyscript.version}`)"
         src="https://pyscript.net/latest/pyscript.js"></script>
-    <script>
-
-
-        setInterval(validate, intervalTime);
-    </script>
 </head>
 
 <body>
@@ -37,7 +32,7 @@
             <iframe id="result" srcdoc="" style="width:100vw;height:100vh;" frameborder="0"></iframe>
 
             <!-- Scripts -->
-            <script>
+            <script type="module">
                 import { basicSetup } from "codemirror"
                 import { EditorView, keymap } from "@codemirror/view"
                 import { indentWithTab } from "@codemirror/commands"
@@ -74,6 +69,8 @@
                         pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
                     }
                 }
+
+                setInterval(validate, intervalTime);
             </script>
             <py-script src="main.py"></py-script>
             <py-config>
