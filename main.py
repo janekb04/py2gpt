@@ -1,6 +1,6 @@
 import ast
 import docstring_parser
-from typing import get_type_hints, Optional
+from typing import Any, get_type_hints
 import types
 import typing
 from pyscript import Element
@@ -71,10 +71,11 @@ def validate_declaration(decl: str) -> dict:
     except docstring_parser.ParseError as e:
         raise ValueError("Invalid function docstring format") from e
 
-    defaults = {
-        arg.arg: ast.literal_eval(arg.value) if arg.value else None
-        for arg in func.args.defaults
-    }
+    defaults: dict[str, Any] = {}
+    for i, arg in enumerate(func.args.defaults):
+        if not isinstance(arg, ast.Constant):
+            raise ValueError("Only constant default values are supported")
+        defaults[func.args.args[-i].arg] = arg.value
 
     namespace = {}
     exec("import typing\nimport types\nfrom typing import*\n" + decl, namespace)
