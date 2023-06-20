@@ -61,7 +61,7 @@ def validate_declaration(decl: str) -> dict:
     for i, arg in enumerate(reversed(func.args.defaults)):
         if not isinstance(arg, ast.Constant):
             raise ValueError("Only constant default values are supported")
-        defaults[func.args.args[-i].arg] = arg.value
+        defaults[func.args.args[-i - 1].arg] = arg.value
 
     if (
         len(func.body) != 1
