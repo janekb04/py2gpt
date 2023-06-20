@@ -57,6 +57,12 @@ def validate_declaration(decl: str) -> dict:
 
     func = parsed.body[0]
 
+    defaults: dict[str, Any] = {}
+    for i, arg in enumerate(reversed(func.args.defaults)):
+        if not isinstance(arg, ast.Constant):
+            raise ValueError("Only constant default values are supported")
+        defaults[func.args.args[-i].arg] = arg.value
+
     if (
         len(func.body) != 1
         or not isinstance(func.body[0], ast.Expr)
@@ -70,12 +76,6 @@ def validate_declaration(decl: str) -> dict:
         parsed_docstring = docstring_parser.parse(docstring)
     except docstring_parser.ParseError as e:
         raise ValueError("Invalid function docstring format") from e
-
-    defaults: dict[str, Any] = {}
-    for i, arg in enumerate(func.args.defaults):
-        if not isinstance(arg, ast.Constant):
-            raise ValueError("Only constant default values are supported")
-        defaults[func.args.args[-i].arg] = arg.value
 
     namespace = {}
     exec("import typing\nimport types\nfrom typing import*\n" + decl, namespace)
