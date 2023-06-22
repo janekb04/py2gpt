@@ -45,7 +45,6 @@
                 flex-basis: 100%;
             }
         }
-
     </style>
     <title>Python to OpenAI function specification converter</title>
     <meta charset="utf-8">
@@ -88,6 +87,22 @@
                     if (val !== lastVal) {
                         lastVal = val;
                         pyscript.interpreter.run("validate(" + JSON.stringify(val) + ")");
+
+                        var iframe = document.getElementById('result');
+                        var codeElement = iframe.contentDocument.getElementsByTagName('code')[0];
+
+                        function adjustFontSize() {
+                            var maxWidth = iframe.clientWidth;
+                            var contentWidth = codeElement.scrollWidth;
+
+                            if (contentWidth > maxWidth) {
+                                var fontSize = window.getComputedStyle(codeElement).getPropertyValue('font-size');
+                                var newFontSize = maxWidth / contentWidth * parseFloat(fontSize);
+                                codeElement.style.fontSize = newFontSize + 'px';
+                            }
+                        }
+
+                        adjustFontSize();
                     }
                 }
 
