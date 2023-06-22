@@ -8,19 +8,18 @@
         #container {
             display: flex;
             flex-direction: row;
-            height: 100%;
-            width: 100%;
+            overflow-y: visible;
         }
 
         #editor_container,
         #result_container {
             flex-grow: 1;
-            height: 100%;
             width: 50%;
             flex-basis: auto;
+            overflow-y: visible;
         }
     </style>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <link rel="stylesheet" href="pyscript.css" />
     <script>
         function setup() {
             import("./codemirror.js").then((module) => {
@@ -66,7 +65,7 @@
             });
         }
     </script>
-    <script defer onload="setup()" src="https://pyscript.net/latest/pyscript.js"></script>
+    <script defer onload="setup()" src="pyscript.js"></script>
 </head>
 
 <body>
