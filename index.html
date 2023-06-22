@@ -2,23 +2,53 @@
 <html>
 
 <head>
-    <title>Python to OpenAI function specification converter</title>
-    <meta charset="utf-8">
     <style>
-        #container {
+        body {
+            margin: 0;
+            padding: 0;
             display: flex;
-            flex-direction: row;
-            overflow-y: visible;
+            flex-direction: column;
+            height: 100vh;
         }
 
-        #editor_container,
-        #result_container {
-            flex-grow: 1;
-            width: 50%;
-            flex-basis: auto;
-            overflow-y: visible;
+        #header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
         }
+
+        #content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        #editor,
+        #results {
+            flex-basis: 50%;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        #result {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media(max-width:600px) {
+
+            #editor,
+            #results {
+                flex-basis: 100%;
+            }
+        }
+
     </style>
+    <title>Python to OpenAI function specification converter</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="pyscript.css" />
     <script>
         function setup() {
@@ -69,20 +99,15 @@
 </head>
 
 <body>
-    <h1>py2gpt<h1>
-            <h2>Python to OpenAI function specification converter</h2>
-            <div id="container">
-                <div id="editor_container">
-                    <div id="editor" style="width:100%;height:100%;"></div>
-                </div>
-                <div id="result_container">
-                    <iframe id="result" srcdoc="" style="width:100%;height:100%;" frameborder="0"></iframe>
-                </div>
-            </div>
-            <py-script src="main.py"></py-script>
-            <py-config>
-                packages = ["docstring_parser", "rich"]
-            </py-config>
+    <div id="header">Header</div>
+    <div id="content">
+        <div id="editor">CodeMirror Editor</div>
+        <div id="results"><iframe id="result" srcdoc=""></iframe></div>
+    </div>
+    <py-script src="main.py"></py-script>
+    <py-config>
+        packages = ["docstring_parser", "rich"]
+    </py-config>
 </body>
 
 </html>
