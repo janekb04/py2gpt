@@ -93,7 +93,7 @@
 
                         function adjustFontSize() {
                             var maxWidth = iframe.clientWidth;
-                            var contentWidth = codeElement.scrollWidth;
+                            var contentWidth = codeElement.contentWidth;
 
                             if (contentWidth > maxWidth) {
                                 var fontSize = window.getComputedStyle(codeElement).getPropertyValue('font-size');
