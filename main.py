@@ -195,17 +195,20 @@ class callable_dict(dict):
         return self.func(*args, **kwargs)
 
 
-def gpt_callable(func: Callable) -> bool:
+def gpt_callable(func: Callable):
     source = inspect.getsource(func)
     schema = parse_code(source)
     func_dict = schema[0]
     return callable_dict(func, func_dict)
 
 
-@gpt_callable
-def test(x):
-    """
-    Test function
-
-    :param x: a parameter
-    """
+# Example usage of the decorator.
+# Doesn't work in Pyodide, so it's commented out.
+#
+# @gpt_callable
+# def test(x):
+#     """
+#     Test function
+#
+#     :param x: a parameter
+#     """
