@@ -41,7 +41,7 @@ users location.',
 
 - [ ] Support classes (treat them as `object`s with certain `"properties"
 - [ ] Support methods (treat them as functions with an additional `self` parameter`)
-- [ ] Support multiple functions
+- [x] Support multiple functions
 - [ ] Support `Enum`s
 - [ ] Support named tuples
 - [ ] Make the code safe for local execution
